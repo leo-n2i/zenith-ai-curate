@@ -5,10 +5,22 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { products, categories } from "@/data/products";
-import { Sparkles, Zap, Shield, TrendingUp, ArrowRight } from "lucide-react";
+import { Sparkles, Zap, Shield, TrendingUp, ArrowRight, Users, Rocket, Globe, Award, CheckCircle, Star, Quote } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const Index = () => {
   const featuredProducts = products.slice(0, 6);
+  const statsAnimation = useScrollAnimation(0.2);
+  const howItWorksAnimation = useScrollAnimation(0.2);
+  const testimonialsAnimation = useScrollAnimation(0.2);
+  const faqAnimation = useScrollAnimation(0.2);
 
   return (
     <div className="min-h-screen">
@@ -149,8 +161,117 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* Stats Section */}
+      <section className="py-20 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-accent/5"></div>
+        <div 
+          ref={statsAnimation.ref}
+          className={`container mx-auto relative z-10 transition-all duration-1000 ${
+            statsAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center space-y-2">
+              <div className="text-5xl md:text-6xl font-bold gradient-text">
+                <AnimatedCounter end={10000} suffix="+" isVisible={statsAnimation.isVisible} />
+              </div>
+              <p className="text-muted-foreground">Active Users</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-5xl md:text-6xl font-bold gradient-text">
+                <AnimatedCounter end={500} suffix="+" isVisible={statsAnimation.isVisible} />
+              </div>
+              <p className="text-muted-foreground">AI Solutions</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-5xl md:text-6xl font-bold gradient-text">
+                <AnimatedCounter end={95} suffix="%" isVisible={statsAnimation.isVisible} />
+              </div>
+              <p className="text-muted-foreground">Satisfaction Rate</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-5xl md:text-6xl font-bold gradient-text">
+                <AnimatedCounter end={120} suffix="+" isVisible={statsAnimation.isVisible} />
+              </div>
+              <p className="text-muted-foreground">Countries Served</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
       <section className="py-20 px-6 bg-card/30">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+              <Rocket className="w-3 h-3 mr-1" />
+              Simple Process
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold">
+              Get Started in <span className="gradient-text">3 Easy Steps</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Deploy enterprise AI solutions in minutes, not months
+            </p>
+          </div>
+
+          <div 
+            ref={howItWorksAnimation.ref}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {[
+              {
+                step: "01",
+                icon: Users,
+                title: "Choose Your Solution",
+                description: "Browse our curated marketplace of AI solutions or explore pre-built bundles tailored to your industry needs."
+              },
+              {
+                step: "02",
+                icon: Zap,
+                title: "Quick Integration",
+                description: "Seamlessly integrate with your existing tools using our plug-and-play APIs and comprehensive documentation."
+              },
+              {
+                step: "03",
+                icon: TrendingUp,
+                title: "Scale & Optimize",
+                description: "Monitor performance in real-time and scale effortlessly as your business grows with our intelligent infrastructure."
+              }
+            ].map((item, index) => (
+              <div
+                key={index}
+                className={`relative transition-all duration-700 delay-${index * 200} ${
+                  howItWorksAnimation.isVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-10'
+                }`}
+              >
+                <div className="rounded-2xl bg-card border border-border/50 p-8 hover-lift relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 text-[120px] font-bold text-primary/5 leading-none">
+                    {item.step}
+                  </div>
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 group-hover:shadow-glow transition-shadow">
+                      <item.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+                {index < 2 && (
+                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-primary to-accent"></div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-20 px-6">
         <div className="container mx-auto">
           <div className="text-center mb-12 space-y-4">
             <h2 className="text-4xl md:text-5xl font-bold">
@@ -173,6 +294,139 @@ const Index = () => {
                 </h3>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-6 bg-card/30">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+              <Star className="w-3 h-3 mr-1" />
+              Trusted by Leaders
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold">
+              What Our <span className="gradient-text">Customers Say</span>
+            </h2>
+          </div>
+
+          <div 
+            ref={testimonialsAnimation.ref}
+            className={`grid grid-cols-1 md:grid-cols-3 gap-8 transition-all duration-1000 ${
+              testimonialsAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            {[
+              {
+                name: "Sarah Chen",
+                role: "CTO at HealthTech Solutions",
+                content: "TagerAi's infrastructure has transformed how we deploy AI models. What used to take weeks now takes hours. The scalability is unmatched.",
+                rating: 5
+              },
+              {
+                name: "Marcus Rodriguez",
+                role: "VP of Operations at FinanceFlow",
+                content: "The analytics platform gave us insights we never thought possible. ROI was positive within the first quarter. Absolutely game-changing.",
+                rating: 5
+              },
+              {
+                name: "Emily Watson",
+                role: "Head of Marketing at RetailHub",
+                content: "Our conversion rates jumped 40% after implementing the AI optimization suite. The customer support is exceptional too.",
+                rating: 5
+              }
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className="rounded-2xl bg-card border border-border/50 p-8 hover-lift relative"
+              >
+                <Quote className="absolute top-6 right-6 w-12 h-12 text-primary/10" />
+                <div className="flex gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-primary text-primary" />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  "{testimonial.content}"
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent"></div>
+                  <div>
+                    <div className="font-semibold">{testimonial.name}</div>
+                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 px-6">
+        <div className="container mx-auto max-w-3xl">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-4xl md:text-5xl font-bold">
+              Frequently Asked <span className="gradient-text">Questions</span>
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Everything you need to know about TagerAi
+            </p>
+          </div>
+
+          <div 
+            ref={faqAnimation.ref}
+            className={`transition-all duration-1000 ${
+              faqAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem value="item-1" className="rounded-xl bg-card border border-border/50 px-6">
+                <AccordionTrigger className="hover:no-underline">
+                  How quickly can I get started?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Most of our AI solutions can be deployed in under 30 minutes. Our quick-start guides and comprehensive documentation ensure you're up and running fast.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2" className="rounded-xl bg-card border border-border/50 px-6">
+                <AccordionTrigger className="hover:no-underline">
+                  What kind of support do you offer?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  We provide 24/7 technical support, dedicated account managers for enterprise clients, comprehensive documentation, and regular training webinars.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3" className="rounded-xl bg-card border border-border/50 px-6">
+                <AccordionTrigger className="hover:no-underline">
+                  Is my data secure?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Absolutely. We're SOC 2 Type II certified, GDPR compliant, and HIPAA compliant. All data is encrypted at rest and in transit using bank-level encryption.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4" className="rounded-xl bg-card border border-border/50 px-6">
+                <AccordionTrigger className="hover:no-underline">
+                  Can I customize the AI solutions?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Yes! All our solutions offer extensive customization options. Enterprise clients can also request fully custom AI models tailored to their specific needs.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5" className="rounded-xl bg-card border border-border/50 px-6">
+                <AccordionTrigger className="hover:no-underline">
+                  What happens if I need to scale?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  Our infrastructure automatically scales with your needs. From startup to enterprise, you can upgrade your plan anytime without any downtime or data migration.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </section>

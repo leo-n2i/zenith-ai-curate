@@ -25,11 +25,11 @@ export const categories = [
 
 export const products: Product[] = [
   {
-    id: "nextcore",
-    name: "NextCore",
+    id: "tagerai",
+    name: "TagerAi",
     category: "AI Infrastructure",
     shortDescription: "Enterprise AI core infrastructure platform for scalable solutions",
-    description: "NextCore is a comprehensive AI infrastructure platform designed for enterprises requiring scalable, secure, and high-performance AI solutions.",
+    description: "TagerAi is a comprehensive AI infrastructure platform designed for enterprises requiring scalable, secure, and high-performance AI solutions.",
     price: "Starting at $299/mo",
     features: [
       "Scalable AI infrastructure",
@@ -153,7 +153,7 @@ export const bundles = [
     id: "enterprise-suite",
     name: "Enterprise AI Suite",
     description: "Complete enterprise-grade AI infrastructure",
-    products: ["NextCore", "FinWise Analytics", "TalentMatch Pro", "SupportIQ"],
+    products: ["TagerAi", "FinWise Analytics", "TalentMatch Pro", "SupportIQ"],
     originalPrice: "$846/mo",
     bundlePrice: "$649/mo",
     savings: "23%"
@@ -162,7 +162,7 @@ export const bundles = [
     id: "healthcare-bundle",
     name: "Healthcare Innovation Bundle",
     description: "Comprehensive AI solutions for healthcare providers",
-    products: ["MediScan AI", "NextCore", "SupportIQ"],
+    products: ["MediScan AI", "TagerAi", "SupportIQ"],
     originalPrice: "$597/mo",
     bundlePrice: "$449/mo",
     savings: "25%"
