@@ -1,6 +1,6 @@
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Zap, Package, CreditCard, Settings, LogOut, User } from 'lucide-react';
+import { LayoutDashboard, Zap, Package, CreditCard, Settings, LogOut, User, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const DashboardSidebar = () => {
@@ -9,9 +9,10 @@ const DashboardSidebar = () => {
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Zap, label: 'My AI Tools', path: '/dashboard/ai-tools' },
-    { icon: Package, label: 'Services', path: '/dashboard/services' },
+    { icon: Package, label: 'Catalog', path: '/dashboard/services' },
     { icon: CreditCard, label: 'Billing', path: '/dashboard/billing' },
     { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
+    { icon: HelpCircle, label: 'Support', path: '/dashboard/support' },
   ];
 
   return (
@@ -19,7 +20,7 @@ const DashboardSidebar = () => {
       {/* Logo */}
       <div className="p-6 border-b border-grey-dark">
         <h1 className="text-2xl font-montserrat font-extrabold gradient-text">
-          TagerAi
+          YourOps.ai
         </h1>
       </div>
 

@@ -16,6 +16,7 @@ import AITools from "./pages/AITools";
 import Services from "./pages/Services";
 import Billing from "./pages/Billing";
 import Settings from "./pages/Settings";
+import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/dashboard/services" element={<ProtectedRoute><Services /></ProtectedRoute>} />
             <Route path="/dashboard/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
             <Route path="/dashboard/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/dashboard/support" element={<ProtectedRoute><Support /></ProtectedRoute>} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

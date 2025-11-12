@@ -63,7 +63,7 @@ export const AuthModal = ({ open, onOpenChange, defaultTab = 'login' }: AuthModa
       <DialogContent className="sm:max-w-[500px] bg-grey-darker border-primary/20">
         <DialogHeader>
           <DialogTitle className="text-2xl font-montserrat font-bold text-foreground">
-            Welcome to TagerAi
+            Welcome to YourOps.ai
           </DialogTitle>
         </DialogHeader>
 

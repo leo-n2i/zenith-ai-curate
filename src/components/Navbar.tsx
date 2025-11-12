@@ -18,10 +18,12 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <NavLink to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-glow">
-              <span className="text-background font-extrabold text-xl font-montserrat">T</span>
-            </div>
-            <span className="font-extrabold text-2xl gradient-text font-montserrat tracking-tight">TagerAi</span>
+            <img
+              src="/logo-ops-ai.png"
+              alt="YourOps.ai logo"
+              className="w-10 h-10 rounded-lg object-cover shadow-glow"
+            />
+            <span className="font-extrabold text-2xl gradient-text font-montserrat tracking-tight">YourOps.ai</span>
           </NavLink>
 
           {/* Desktop Navigation */}

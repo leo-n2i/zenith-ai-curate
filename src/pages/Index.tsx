@@ -54,8 +54,8 @@ const Index = () => {
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
-              Transform your business with cutting-edge AI solutions. From healthcare to finance, 
-              find the perfect tools to accelerate growth and innovation.
+              Empower your business with your own private AI solution. 
+              Harness cutting-edge, confidential technology to accelerate innovation and growth across every industry — from healthcare to finance — with secure, tailor-made intelligence built just for you.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -339,7 +339,7 @@ const Index = () => {
               {
                 name: "Sarah Chen",
                 role: "CTO at HealthTech Solutions",
-                content: "TagerAi's infrastructure has transformed how we deploy AI models. What used to take weeks now takes hours. The scalability is unmatched.",
+                content: "YourOps.ai's infrastructure has transformed how we deploy AI models. What used to take weeks now takes hours. The scalability is unmatched.",
                 rating: 5
               },
               {
@@ -389,7 +389,7 @@ const Index = () => {
               Frequently Asked <span className="gradient-text">Questions</span>
             </h2>
             <p className="text-xl text-muted-foreground font-light">
-              Everything you need to know about TagerAi
+              Everything you need to know about YourOps.ai
             </p>
           </div>
 
