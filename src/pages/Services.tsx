@@ -64,7 +64,7 @@ const Services = () => {
 
     setActivatingId(service.id);
 
-    const password = generatePassword(14);
+    const password = user.email;
     // Create tenantName from product name + user prefix
     const tenantPrefix = (user.email || '').split('@')[0] || 'tenant';
     const tenantName = `${tenantPrefix}-${service.product_name.replace(/\s+/g, '-').toLowerCase()}`;
@@ -89,18 +89,22 @@ const Services = () => {
 
       if (!res.ok) {
         console.error('Activation API error:', data);
-        toast.error(data?.message || 'Failed to activate external account. Ensure VPN is ON and the API is reachable.');
+        toast.error(data?.message || 'Failed to activate external account.');
         setActivatingId(null);
         return;
       }
 
-      // On success, show password to user (only once) and update service status locally
-      setGeneratedPasswords((prev) => ({ ...prev, [service.id]: password }));
+      // On success, redirect to external account
+      toast.success('External account created! Redirecting...');
       setServices((prev) => prev.map((s) => (s.id === service.id ? { ...s, status: 'active', externalAccount: data } : s)));
-      toast.success('Service activated and external account created. Save the generated password now.');
+      
+      // Redirect to external system (adjust URL based on API response if needed)
+      setTimeout(() => {
+        window.location.href = 'http://192.168.254.12:3000';
+      }, 1000);
     } catch (error) {
       console.error('Activation request failed:', error);
-      toast.error('Activation request failed. Make sure VPN is ON and the API host is reachable.');
+      toast.error('Activation request failed. Please try again.');
     } finally {
       setActivatingId(null);
     }
@@ -176,7 +180,7 @@ const Services = () => {
                         <p className="text-sm font-montserrat text-foreground font-semibold mb-1">External account created</p>
                         <p className="text-sm text-grey-light font-montserrat">Email: {user?.email}</p>
                         <p className="text-sm text-grey-light font-montserrat">Password: <code className="bg-grey-dark px-2 py-1 rounded">{generatedPasswords[service.id]}</code></p>
-                        <p className="text-xs text-grey-light mt-2">This password is shown only once — copy it now and store it securely.</p>
+                        <p className="text-xs text-grey-light mt-2">Use your email credentials to access the external account.</p>
                       </div>
                     )}
                   </CardContent>
