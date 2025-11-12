@@ -13,11 +13,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
     <div className="group relative tech-card overflow-hidden noise-texture">
       {/* Image Section */}
       <div className="relative h-48 bg-gradient-to-br from-primary/5 to-secondary/5 overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary opacity-30 blur-3xl animate-glow"></div>
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-7xl font-extrabold text-primary/10 font-montserrat">AI</span>
+        {/* product image */}
+        <div className="absolute inset-0">
+          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent"></div>
       </div>

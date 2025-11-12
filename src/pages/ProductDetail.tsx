@@ -107,9 +107,9 @@ const ProductDetail = () => {
               </div>
 
               <div className="flex-1">
-                <div className="relative rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 p-12 aspect-square flex items-center justify-center">
+                <div className="relative rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 p-6 aspect-square flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl"></div>
-                  <div className="relative text-9xl font-bold text-foreground/10">AI</div>
+                  <img src={product.image} alt={product.name} className="w-full h-full object-contain rounded-2xl" />
                 </div>
               </div>
             </div>

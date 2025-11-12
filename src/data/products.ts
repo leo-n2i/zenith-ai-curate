@@ -26,17 +26,18 @@ export const categories = [
 export const products: Product[] = [
   {
     id: "YourOps.ai",
-    name: "YourOps.ai",
+    name: "NextSoc",
     category: "AI Infrastructure",
     shortDescription: "Enterprise AI core infrastructure platform for scalable solutions",
-    description: "YourOps.ai is a comprehensive AI infrastructure platform designed for enterprises requiring scalable, secure, and high-performance AI solutions.",
+    description: "NextSoc is a comprehensive AI infrastructure platform designed for enterprises requiring scalable, secure, and high-performance AI solutions.",
     price: "Starting at $299/mo",
     features: [
       "Scalable AI infrastructure",
       "Advanced security features",
       "Real-time analytics dashboard"
     ],
-    image: "/placeholder.svg",
+  // imageSoc.png not present in /public; use existing image.png instead
+  image: "/image.png",
     isNextCore: true
   },
   {
@@ -153,7 +154,7 @@ export const bundles = [
     id: "enterprise-suite",
     name: "Enterprise AI Suite",
     description: "Complete enterprise-grade AI infrastructure",
-    products: ["YourOps.ai", "FinWise Analytics", "TalentMatch Pro", "SupportIQ"],
+  products: ["NextSoc", "FinWise Analytics", "TalentMatch Pro", "SupportIQ"],
     originalPrice: "$846/mo",
     bundlePrice: "$649/mo",
     savings: "23%"
@@ -162,7 +163,7 @@ export const bundles = [
     id: "healthcare-bundle",
     name: "Healthcare Innovation Bundle",
     description: "Comprehensive AI solutions for healthcare providers",
-    products: ["MediScan AI", "YourOps.ai", "SupportIQ"],
+  products: ["MediScan AI", "NextSoc", "SupportIQ"],
     originalPrice: "$597/mo",
     bundlePrice: "$449/mo",
     savings: "25%"
