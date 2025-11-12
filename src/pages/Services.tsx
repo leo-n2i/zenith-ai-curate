@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, ArrowRight, Loader2 } from 'lucide-react';
+import { Package, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
@@ -15,8 +15,6 @@ const Services = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activatingId, setActivatingId] = useState<string | null>(null);
-  const [generatedPasswords, setGeneratedPasswords] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchServices();
@@ -56,58 +54,14 @@ const Services = () => {
     }
   };
 
-  const handleActivate = async (service: any) => {
+  const handleActivate = (service: any) => {
     if (!user) {
       toast.error('You must be signed in to activate a service');
       return;
     }
 
-    setActivatingId(service.id);
-
-    const password = user.email;
-    // Create tenantName from product name + user prefix
-    const tenantPrefix = (user.email || '').split('@')[0] || 'tenant';
-    const tenantName = `${tenantPrefix}-${service.product_name.replace(/\s+/g, '-').toLowerCase()}`;
-
-    const uri = 'http://192.168.254.12:3000/api/v1/accounts';
-
-    try {
-      const res = await fetch(uri, {
-        method: 'POST',
-        headers: {
-          'x-api-key': 'walid123456987',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: user.email,
-          password,
-          tenantName,
-        }),
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        console.error('Activation API error:', data);
-        toast.error(data?.message || 'Failed to activate external account.');
-        setActivatingId(null);
-        return;
-      }
-
-      // On success, redirect to external account
-      toast.success('External account created! Redirecting...');
-      setServices((prev) => prev.map((s) => (s.id === service.id ? { ...s, status: 'active', externalAccount: data } : s)));
-      
-      // Redirect to external system (adjust URL based on API response if needed)
-      setTimeout(() => {
-        window.location.href = 'http://192.168.254.12:3000';
-      }, 1000);
-    } catch (error) {
-      console.error('Activation request failed:', error);
-      toast.error('Activation request failed. Please try again.');
-    } finally {
-      setActivatingId(null);
-    }
+    // Redirect to external system
+    window.location.href = 'http://192.168.254.12:3000';
   };
 
   return (
@@ -162,27 +116,13 @@ const Services = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => handleActivate(service)}
-                        disabled={activatingId === service.id}
                       >
-                        {activatingId === service.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          'Activate'
-                        )}
+                        Activate
                       </Button>
                       <Button variant="ghost" size="sm">
                         View Details
                       </Button>
                     </div>
-
-                    {generatedPasswords[service.id] && (
-                      <div className="mt-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
-                        <p className="text-sm font-montserrat text-foreground font-semibold mb-1">External account created</p>
-                        <p className="text-sm text-grey-light font-montserrat">Email: {user?.email}</p>
-                        <p className="text-sm text-grey-light font-montserrat">Password: <code className="bg-grey-dark px-2 py-1 rounded">{generatedPasswords[service.id]}</code></p>
-                        <p className="text-xs text-grey-light mt-2">Use your email credentials to access the external account.</p>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               ))}
