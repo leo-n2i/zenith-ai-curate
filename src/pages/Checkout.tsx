@@ -97,6 +97,24 @@ const Checkout = () => {
 
       if (productError) throw productError;
 
+      // Also add to user_services so Services and Dashboard reflect the new active service
+      const { error: serviceError } = await supabase
+        .from('user_services')
+        .insert({
+          user_id: user.id,
+          product_name: product.name,
+          plan: selectedPlanData.name,
+          price: selectedPlanData.price,
+          status: 'active',
+        });
+
+      if (serviceError) {
+        // Log but don't block user flow; the product was created above. Notify devs if needed.
+        console.error('Failed to insert into user_services:', serviceError);
+        // Optionally show a non-blocking toast
+        toast('Purchase completed but failed to register service. Contact support if this persists.');
+      }
+
       toast.success('Purchase completed successfully!');
 
       setTimeout(() => {

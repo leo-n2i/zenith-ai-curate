@@ -4,7 +4,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, ArrowRight } from 'lucide-react';
+import { Package, ArrowRight, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { products } from '@/data/products';
@@ -14,6 +15,8 @@ const Services = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activatingId, setActivatingId] = useState<string | null>(null);
+  const [generatedPasswords, setGeneratedPasswords] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchServices();
@@ -35,6 +38,71 @@ const Services = () => {
       console.error('Error fetching services:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const generatePassword = (length = 12) => {
+    // Use Web Crypto API when available for better randomness
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?';
+    try {
+      const array = new Uint32Array(length);
+      window.crypto.getRandomValues(array);
+      return Array.from(array, (n) => chars[n % chars.length]).join('');
+    } catch (e) {
+      // Fallback
+      let res = '';
+      for (let i = 0; i < length; i++) res += chars[Math.floor(Math.random() * chars.length)];
+      return res;
+    }
+  };
+
+  const handleActivate = async (service: any) => {
+    if (!user) {
+      toast.error('You must be signed in to activate a service');
+      return;
+    }
+
+    setActivatingId(service.id);
+
+    const password = generatePassword(14);
+    // Create tenantName from product name + user prefix
+    const tenantPrefix = (user.email || '').split('@')[0] || 'tenant';
+    const tenantName = `${tenantPrefix}-${service.product_name.replace(/\s+/g, '-').toLowerCase()}`;
+
+    const uri = 'http://192.168.254.12:3000/api/v1/accounts';
+
+    try {
+      const res = await fetch(uri, {
+        method: 'POST',
+        headers: {
+          'x-api-key': 'walid123456987',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.email,
+          password,
+          tenantName,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        console.error('Activation API error:', data);
+        toast.error(data?.message || 'Failed to activate external account. Ensure VPN is ON and the API is reachable.');
+        setActivatingId(null);
+        return;
+      }
+
+      // On success, show password to user (only once) and update service status locally
+      setGeneratedPasswords((prev) => ({ ...prev, [service.id]: password }));
+      setServices((prev) => prev.map((s) => (s.id === service.id ? { ...s, status: 'active', externalAccount: data } : s)));
+      toast.success('Service activated and external account created. Save the generated password now.');
+    } catch (error) {
+      console.error('Activation request failed:', error);
+      toast.error('Activation request failed. Make sure VPN is ON and the API host is reachable.');
+    } finally {
+      setActivatingId(null);
     }
   };
 
@@ -86,13 +154,31 @@ const Services = () => {
                       </div>
                     </div>
                     <div className="mt-4 flex gap-2">
-                      <Button variant="outline" size="sm">
-                        Manage
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleActivate(service)}
+                        disabled={activatingId === service.id}
+                      >
+                        {activatingId === service.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          'Activate'
+                        )}
                       </Button>
                       <Button variant="ghost" size="sm">
                         View Details
                       </Button>
                     </div>
+
+                    {generatedPasswords[service.id] && (
+                      <div className="mt-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
+                        <p className="text-sm font-montserrat text-foreground font-semibold mb-1">External account created</p>
+                        <p className="text-sm text-grey-light font-montserrat">Email: {user?.email}</p>
+                        <p className="text-sm text-grey-light font-montserrat">Password: <code className="bg-grey-dark px-2 py-1 rounded">{generatedPasswords[service.id]}</code></p>
+                        <p className="text-xs text-grey-light mt-2">This password is shown only once — copy it now and store it securely.</p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}
