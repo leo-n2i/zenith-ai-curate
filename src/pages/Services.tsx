@@ -117,7 +117,7 @@ const Services = () => {
                         size="sm"
                         onClick={() => handleActivate(service)}
                       >
-                        Activate
+                        Launch
                       </Button>
                       <Button variant="ghost" size="sm">
                         View Details

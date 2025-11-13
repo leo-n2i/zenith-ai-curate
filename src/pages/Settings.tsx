@@ -138,9 +138,9 @@ const Settings = () => {
             <TabsTrigger value="profile" className="font-montserrat">
               Profile
             </TabsTrigger>
-            <TabsTrigger value="api" className="font-montserrat">
+            {/* <TabsTrigger value="api" className="font-montserrat">
               API & Integrations
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger value="security" className="font-montserrat">
               Security
             </TabsTrigger>
@@ -227,7 +227,7 @@ const Settings = () => {
           </TabsContent>
 
           {/* API & Integrations Tab */}
-          <TabsContent value="api">
+          {/* <TabsContent value="api">
             <Card className="tech-card">
               <CardHeader>
                 <CardTitle className="font-montserrat font-extrabold text-2xl">
@@ -253,7 +253,7 @@ const Settings = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </TabsContent> */}
 
           {/* Security Tab */}
           <TabsContent value="security">

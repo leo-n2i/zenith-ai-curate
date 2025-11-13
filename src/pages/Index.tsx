@@ -74,7 +74,7 @@ const Index = () => {
           </div>
 
           {/* Floating Tech Cards Animation */}
-          <div className="mt-20 relative h-64 hidden lg:block">
+          {/* <div className="mt-20 relative h-64 hidden lg:block">
             <div className="absolute top-0 left-1/4 tech-card p-6 animate-float shadow-glow" style={{ animationDelay: '0s', width: '220px' }}>
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary shadow-glow"></div>
@@ -96,7 +96,7 @@ const Index = () => {
                 <div className="h-full w-3/5 bg-gradient-to-r from-secondary to-primary rounded-full"></div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 

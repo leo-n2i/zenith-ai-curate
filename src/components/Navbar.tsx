@@ -1,8 +1,9 @@
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { AuthModal } from "@/components/AuthModal";
 
@@ -10,6 +11,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   return (
@@ -59,8 +61,21 @@ const Navbar = () => {
             </NavLink>
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Button & Theme Toggle */}
+          <div className="hidden md:flex items-center gap-3">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg border border-border/50 hover:bg-muted transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {theme === 'light' ? (
+                <Moon className="w-5 h-5 text-foreground" />
+              ) : (
+                <Sun className="w-5 h-5 text-foreground" />
+              )}
+            </button>
+
             {user ? (
               <Button onClick={() => navigate('/dashboard')}>
                 <User className="w-4 h-4 mr-2" />
@@ -74,13 +89,28 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            {/* Mobile Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg border border-border/50 hover:bg-muted transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {theme === 'light' ? (
+                <Moon className="w-4 h-4 text-foreground" />
+              ) : (
+                <Sun className="w-4 h-4 text-foreground" />
+              )}
+            </button>
+
+            <button
+              className="text-foreground"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}

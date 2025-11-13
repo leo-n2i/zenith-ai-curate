@@ -333,7 +333,7 @@ const AITools = () => {
         )}
 
         {/* API Configuration Panel */}
-        <Card className="tech-card mb-8">
+        {/* <Card className="tech-card mb-8">
           <CardHeader>
             <CardTitle className="font-montserrat font-extrabold text-2xl">
               API Configuration
@@ -391,10 +391,10 @@ const AITools = () => {
                     {showApiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {/* Advanced Settings */}
-              <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
+              {/* <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
                 <CollapsibleTrigger className="flex items-center gap-2 text-sm text-grey-light hover:text-foreground font-montserrat">
                   <ChevronDown className={`h-4 w-4 transition-transform ${advancedOpen ? 'rotate-180' : ''}`} />
                   Advanced Settings
@@ -427,14 +427,14 @@ const AITools = () => {
                     />
                   </div>
                 </CollapsibleContent>
-              </Collapsible>
+              </Collapsible> */}
 
-              <Button type="submit" className="w-full">
+              {/* <Button type="submit" className="w-full">
                 Save Configuration
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+              </Button> */}
+            {/* </form> */}
+          {/* </CardContent> */}
+        {/* </Card> */}
 
         {/* Tool Interface/Playground */}
         {connections.length > 0 && (
@@ -510,7 +510,7 @@ const AITools = () => {
         )}
 
         {/* Empty State */}
-        {connections.length === 0 && !loading && (
+        {/* {connections.length === 0 && !loading && (
           <Card className="tech-card">
             <CardContent className="text-center py-12">
               <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
@@ -524,7 +524,7 @@ const AITools = () => {
               </p>
             </CardContent>
           </Card>
-        )}
+        )} */}
       </main>
     </div>
   );

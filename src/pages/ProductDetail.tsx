@@ -66,7 +66,7 @@ const ProductDetail = () => {
       return;
     }
 
-    navigate(`/checkout?product=${product.id}&plan=${planKey}`);
+    navigate(`/payment-method?product=${product.id}&plan=${planKey}`);
   };
 
   return (

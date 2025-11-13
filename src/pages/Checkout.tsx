@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Loader2, CreditCard, CheckCircle, Lock } from 'lucide-react';
+import { Loader2, CheckCircle, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { products } from '@/data/products';
 
@@ -17,28 +15,19 @@ const Checkout = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [loading, setLoading] = useState(false);
-  const [processing, setProcessing] = useState(false);
 
   const productId = searchParams.get('product');
   const planParam = searchParams.get('plan');
 
   const product = products.find(p => p.id === productId);
 
-  const [selectedPlan, setSelectedPlan] = useState(planParam || 'professional');
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [cardDetails, setCardDetails] = useState({
-    number: '',
-    name: '',
-    expiry: '',
-    cvv: '',
-  });
+  const [selectedPlan, setSelectedPlan] = useState<string>(planParam || 'professional');
 
   const pricingTiers = {
     starter: { name: 'Starter', price: 99 },
     professional: { name: 'Professional', price: 299 },
     enterprise: { name: 'Enterprise', price: 999 },
-  };
+  } as const;
 
   useEffect(() => {
     if (!user) {
@@ -52,81 +41,10 @@ const Checkout = () => {
     }
   }, [user, product, productId, navigate]);
 
-  const handleCheckout = async (e: React.FormEvent) => {
+  const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!user || !product) return;
-
-    if (paymentMethod === 'card' && (!cardDetails.number || !cardDetails.name || !cardDetails.expiry || !cardDetails.cvv)) {
-      toast.error('Please fill in all card details');
-      return;
-    }
-
-    setProcessing(true);
-
-    try {
-      const selectedPlanData = pricingTiers[selectedPlan as keyof typeof pricingTiers];
-
-      const { data: orderData, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user.id,
-          product_id: product.id,
-          product_name: product.name,
-          plan: selectedPlanData.name,
-          amount: selectedPlanData.price,
-          status: 'completed',
-          payment_method: paymentMethod,
-        })
-        .select()
-        .single();
-
-      if (orderError) throw orderError;
-
-      const { error: productError } = await supabase
-        .from('user_products')
-        .insert({
-          user_id: user.id,
-          product_id: product.id,
-          product_name: product.name,
-          plan: selectedPlanData.name,
-          price: selectedPlanData.price,
-          status: 'active',
-          order_id: orderData.id,
-        });
-
-      if (productError) throw productError;
-
-      // Also add to user_services so Services and Dashboard reflect the new active service
-      const { error: serviceError } = await supabase
-        .from('user_services')
-        .insert({
-          user_id: user.id,
-          product_name: product.name,
-          plan: selectedPlanData.name,
-          price: selectedPlanData.price,
-          status: 'active',
-        });
-
-      if (serviceError) {
-        // Log but don't block user flow; the product was created above. Notify devs if needed.
-        console.error('Failed to insert into user_services:', serviceError);
-        // Optionally show a non-blocking toast
-        toast('Purchase completed but failed to register service. Contact support if this persists.');
-      }
-
-      toast.success('Purchase completed successfully!');
-
-      setTimeout(() => {
-        navigate('/dashboard/ai-tools');
-      }, 1500);
-
-    } catch (error: any) {
-      console.error('Checkout error:', error);
-      toast.error(error.message || 'Failed to complete purchase');
-    } finally {
-      setProcessing(false);
-    }
+    // Redirect to the payment method selection page with query params
+    navigate(`/payment-method?product=${productId}&plan=${selectedPlan}`);
   };
 
   if (!product) {
@@ -144,122 +62,22 @@ const Checkout = () => {
       <div className="pt-24 pb-20 px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="mb-8">
-            <h1 className="text-4xl font-montserrat font-extrabold text-foreground mb-2">
-              Checkout
-            </h1>
-            <p className="text-grey-light font-montserrat">
-              Complete your purchase securely
-            </p>
+            <h1 className="text-4xl font-montserrat font-extrabold text-foreground mb-2">Get Started</h1>
+            <p className="text-grey-light font-montserrat">Choose the perfect plan for your needs</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <form onSubmit={handleCheckout} className="space-y-6">
-                <Card className="tech-card p-6">
-                  <h2 className="text-2xl font-montserrat font-bold mb-6">Select Plan</h2>
-                  <RadioGroup value={selectedPlan} onValueChange={setSelectedPlan}>
-                    {Object.entries(pricingTiers).map(([key, tier]) => (
-                      <div key={key} className="flex items-center space-x-3 p-4 rounded-lg border border-grey-medium hover:border-primary transition-all">
-                        <RadioGroupItem value={key} id={key} />
-                        <Label htmlFor={key} className="flex-1 cursor-pointer">
-                          <div className="flex justify-between items-center">
-                            <span className="font-montserrat font-semibold">{tier.name}</span>
-                            <span className="text-primary font-montserrat font-bold">${tier.price}/mo</span>
-                          </div>
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </Card>
-
-                <Card className="tech-card p-6">
-                  <h2 className="text-2xl font-montserrat font-bold mb-6">Payment Method</h2>
-                  <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-                    <div className="flex items-center space-x-3 p-4 rounded-lg border border-grey-medium hover:border-primary transition-all">
-                      <RadioGroupItem value="card" id="card" />
-                      <Label htmlFor="card" className="flex items-center gap-2 cursor-pointer">
-                        <CreditCard className="h-5 w-5" />
-                        <span className="font-montserrat font-semibold">Credit/Debit Card</span>
-                      </Label>
-                    </div>
-                  </RadioGroup>
-
-                  {paymentMethod === 'card' && (
-                    <div className="mt-6 space-y-4">
-                      <div>
-                        <Label htmlFor="card-number" className="font-montserrat">Card Number</Label>
-                        <Input
-                          id="card-number"
-                          placeholder="1234 5678 9012 3456"
-                          value={cardDetails.number}
-                          onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
-                          className="bg-grey-dark border-grey-medium font-montserrat mt-2"
-                          maxLength={19}
-                        />
-                      </div>
-
-                      <div>
-                        <Label htmlFor="card-name" className="font-montserrat">Cardholder Name</Label>
-                        <Input
-                          id="card-name"
-                          placeholder="John Doe"
-                          value={cardDetails.name}
-                          onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
-                          className="bg-grey-dark border-grey-medium font-montserrat mt-2"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="expiry" className="font-montserrat">Expiry Date</Label>
-                          <Input
-                            id="expiry"
-                            placeholder="MM/YY"
-                            value={cardDetails.expiry}
-                            onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })}
-                            className="bg-grey-dark border-grey-medium font-montserrat mt-2"
-                            maxLength={5}
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="cvv" className="font-montserrat">CVV</Label>
-                          <Input
-                            id="cvv"
-                            placeholder="123"
-                            type="password"
-                            value={cardDetails.cvv}
-                            onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
-                            className="bg-grey-dark border-grey-medium font-montserrat mt-2"
-                            maxLength={4}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </Card>
-
-                <Button
-                  type="submit"
-                  className="w-full"
-                  size="lg"
-                  disabled={processing}
-                >
-                  {processing ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="mr-2 h-5 w-5" />
-                      Complete Purchase
-                    </>
-                  )}
-                </Button>
-
-                <p className="text-center text-sm text-grey-light font-montserrat">
-                  Your payment information is secure and encrypted
-                </p>
+              <form onSubmit={handleProceedToPayment} className="space-y-6">
+                <div className="flex justify-between items-center gap-4">
+                  <Button type="button" variant="outline" size="lg" onClick={() => navigate(`/products/${productId}`)}>
+                    Back
+                  </Button>
+                  <Button type="submit" className="bg-gradient-to-r from-primary to-accent" size="lg">
+                    Continue to Payment
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </div>
               </form>
             </div>
 
@@ -268,12 +86,12 @@ const Checkout = () => {
                 <h2 className="text-xl font-montserrat font-bold mb-6">Order Summary</h2>
 
                 <div className="space-y-4 mb-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                      <span className="text-2xl font-bold text-background">AI</span>
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-grey-dark/50 border border-grey-medium">
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-background">AI</span>
                     </div>
                     <div>
-                      <h3 className="font-montserrat font-bold">{product.name}</h3>
+                      <h3 className="font-montserrat font-bold text-foreground">{product.name}</h3>
                       <p className="text-sm text-grey-light">{product.category}</p>
                     </div>
                   </div>
@@ -282,9 +100,7 @@ const Checkout = () => {
                 <div className="space-y-3 pt-6 border-t border-grey-medium">
                   <div className="flex justify-between">
                     <span className="text-grey-light font-montserrat">Plan</span>
-                    <span className="font-montserrat font-semibold">
-                      {pricingTiers[selectedPlan as keyof typeof pricingTiers].name}
-                    </span>
+                    <span className="font-montserrat font-semibold">{pricingTiers[selectedPlan as keyof typeof pricingTiers].name}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-grey-light font-montserrat">Billing</span>
@@ -292,9 +108,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between pt-3 border-t border-grey-medium">
                     <span className="font-montserrat font-bold">Total</span>
-                    <span className="text-2xl font-montserrat font-extrabold text-primary">
-                      ${pricingTiers[selectedPlan as keyof typeof pricingTiers].price}/mo
-                    </span>
+                    <span className="text-2xl font-montserrat font-extrabold text-primary">${pricingTiers[selectedPlan as keyof typeof pricingTiers].price}/mo</span>
                   </div>
                 </div>
 

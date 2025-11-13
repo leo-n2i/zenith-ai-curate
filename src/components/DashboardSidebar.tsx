@@ -1,6 +1,6 @@
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Zap, Package, CreditCard, Settings, LogOut, User, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, Zap, Package, CreditCard, Settings, LogOut, User, HelpCircle, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const DashboardSidebar = () => {
@@ -8,8 +8,9 @@ const DashboardSidebar = () => {
 
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-    { icon: Zap, label: 'My AI Tools', path: '/dashboard/ai-tools' },
+    // { icon: Zap, label: 'My AI Tools', path: '/dashboard/ai-tools' },
     { icon: Package, label: 'Catalog', path: '/dashboard/services' },
+    { icon: ShoppingCart, label: 'Orders', path: '/dashboard/orders' },
     { icon: CreditCard, label: 'Billing', path: '/dashboard/billing' },
     { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
     { icon: HelpCircle, label: 'Support', path: '/dashboard/support' },
