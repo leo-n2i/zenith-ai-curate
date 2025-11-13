@@ -67,37 +67,7 @@ const Checkout = () => {
     try {
       const selectedPlanData = pricingTiers[selectedPlan as keyof typeof pricingTiers];
 
-      const { data: orderData, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user.id,
-          product_id: product.id,
-          product_name: product.name,
-          plan: selectedPlanData.name,
-          amount: selectedPlanData.price,
-          status: 'completed',
-          payment_method: paymentMethod,
-        })
-        .select()
-        .single();
-
-      if (orderError) throw orderError;
-
-      const { error: productError } = await supabase
-        .from('user_products')
-        .insert({
-          user_id: user.id,
-          product_id: product.id,
-          product_name: product.name,
-          plan: selectedPlanData.name,
-          price: selectedPlanData.price,
-          status: 'active',
-          order_id: orderData.id,
-        });
-
-      if (productError) throw productError;
-
-      // Also add to user_services so Services and Dashboard reflect the new active service
+      // Add to user_services
       const { error: serviceError } = await supabase
         .from('user_services')
         .insert({
@@ -108,12 +78,7 @@ const Checkout = () => {
           status: 'active',
         });
 
-      if (serviceError) {
-        // Log but don't block user flow; the product was created above. Notify devs if needed.
-        console.error('Failed to insert into user_services:', serviceError);
-        // Optionally show a non-blocking toast
-        toast('Purchase completed but failed to register service. Contact support if this persists.');
-      }
+      if (serviceError) throw serviceError;
 
       toast.success('Purchase completed successfully!');
 

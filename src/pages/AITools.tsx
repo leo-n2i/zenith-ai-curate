@@ -63,11 +63,11 @@ const AITools = () => {
 
     try {
       const { data, error } = await supabase
-        .from('user_products')
+        .from('user_services')
         .select('*')
         .eq('user_id', user.id)
         .eq('status', 'active')
-        .order('activated_at', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       setPurchasedProducts(data || []);

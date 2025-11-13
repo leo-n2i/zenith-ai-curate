@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { AuthModal } from "@/components/AuthModal";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,54 +14,50 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-border/50">
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="container mx-auto px-12">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <NavLink to="/" className="flex items-center space-x-3 group">
-            <img
-              src="/logo-ops-ai.png"
-              alt="YourOps.ai logo"
-              className="w-10 h-10 rounded-lg object-cover shadow-glow"
-            />
-            <span className="font-extrabold text-2xl gradient-text font-montserrat tracking-tight">YourOps.ai</span>
+            <span className="font-semibold text-xl tracking-tight">TagerAi</span>
           </NavLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-12">
             <NavLink
               to="/"
               end
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              activeClassName="text-foreground font-medium"
             >
               Home
             </NavLink>
             <NavLink
               to="/products"
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              activeClassName="text-foreground font-medium"
             >
               Products
             </NavLink>
             <NavLink
               to="/bundles"
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              activeClassName="text-foreground font-medium"
             >
               Bundles
             </NavLink>
             <NavLink
               to="/contact"
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              activeClassName="text-foreground font-medium"
             >
               Contact
             </NavLink>
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Button and Theme Toggle */}
+          <div className="hidden md:flex items-center space-x-6">
+            <ThemeToggle />
             {user ? (
               <Button onClick={() => navigate('/dashboard')}>
                 <User className="w-4 h-4 mr-2" />

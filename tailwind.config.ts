@@ -64,13 +64,19 @@ export default {
         'grey-lighter': 'hsl(var(--grey-lighter))',
       },
       fontFamily: {
-        sans: ['Montserrat', 'system-ui', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0px",
+        md: "0px",
+        sm: "0px",
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '26': '6.5rem',
+        '30': '7.5rem',
       },
       keyframes: {
         "accordion-down": {
@@ -107,10 +113,8 @@ export default {
         "glow": "glow 2s ease-in-out infinite",
       },
       boxShadow: {
-        'glow': '0 0 20px hsl(120 50% 50% / 0.15)',
-        'glow-intense': '0 0 30px hsl(120 50% 50% / 0.25)',
-        'elevated': '0 8px 40px hsl(0 0% 0% / 0.5), 0 0 15px hsl(120 50% 50% / 0.08)',
-        'card': '0 4px 24px hsl(0 0% 0% / 0.4), 0 0 10px hsl(120 50% 50% / 0.05)',
+        'minimal': '0 1px 3px hsl(0 0% 0% / 0.05)',
+        'elevated': '0 4px 12px hsl(0 0% 0% / 0.08)',
       },
     },
   },
