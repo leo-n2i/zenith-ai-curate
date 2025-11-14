@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { Mail, Clock, MessageSquare, CheckCircle } from "lucide-react";
 import { products } from "@/data/products";
 
 const Contact = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
@@ -27,8 +29,8 @@ const Contact = () => {
     // Basic validation
     if (!formData.name || !formData.email || !formData.message) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields",
+        title: t('contact.toastErrorTitle'),
+        description: t('contact.toastErrorRequired'),
         variant: "destructive"
       });
       return;
@@ -38,8 +40,8 @@ const Contact = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       toast({
-        title: "Error",
-        description: "Please enter a valid email address",
+        title: t('contact.toastErrorTitle'),
+        description: t('contact.toastErrorEmail'),
         variant: "destructive"
       });
       return;
@@ -51,8 +53,8 @@ const Contact = () => {
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     toast({
-      title: "Message sent!",
-      description: "We'll get back to you within 24 hours.",
+      title: t('contact.toastSuccessTitle'),
+      description: t('contact.toastSuccessDesc'),
     });
 
     // Reset form
@@ -76,10 +78,10 @@ const Contact = () => {
           {/* Header */}
           <div className="text-center mb-16 space-y-4 animate-fade-in">
             <h1 className="text-5xl md:text-6xl font-bold">
-              Get in <span className="gradient-text">Touch</span>
+              {t('contact.pageTitle')} <span className="gradient-text">{t('contact.pageTitleHighlight')}</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              We're here to help you find the perfect AI solution for your business
+              {t('contact.pageSubtitle')}
             </p>
           </div>
 
@@ -91,13 +93,13 @@ const Contact = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium mb-2">
-                        Name <span className="text-destructive">*</span>
+                        {t('contact.formLabelName')} <span className="text-destructive">{t('contact.formRequired')}</span>
                       </label>
                       <Input
                         id="name"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="John Doe"
+                        onChange={(e) => setFormData({ ...formData, name: (e.target as HTMLInputElement).value })}
+                        placeholder={t('contact.placeholderName')}
                         required
                         className="bg-background"
                       />
@@ -105,14 +107,14 @@ const Contact = () => {
 
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium mb-2">
-                        Email <span className="text-destructive">*</span>
+                        {t('contact.formLabelEmail')} <span className="text-destructive">{t('contact.formRequired')}</span>
                       </label>
                       <Input
                         id="email"
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="john@company.com"
+                        onChange={(e) => setFormData({ ...formData, email: (e.target as HTMLInputElement).value })}
+                        placeholder={t('contact.placeholderEmail')}
                         required
                         className="bg-background"
                       />
@@ -121,27 +123,27 @@ const Contact = () => {
 
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium mb-2">
-                      Company (Optional)
+                      {t('contact.formLabelCompany')}
                     </label>
                     <Input
                       id="company"
                       value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      placeholder="Your Company Inc."
+                      onChange={(e) => setFormData({ ...formData, company: (e.target as HTMLInputElement).value })}
+                      placeholder={t('contact.placeholderCompany')}
                       className="bg-background"
                     />
                   </div>
 
                   <div>
                     <label htmlFor="product" className="block text-sm font-medium mb-2">
-                      Product Interest
+                      {t('contact.formLabelProduct')}
                     </label>
                     <Select value={formData.product} onValueChange={(value) => setFormData({ ...formData, product: value })}>
                       <SelectTrigger className="bg-background">
-                        <SelectValue placeholder="Select a product" />
+                        <SelectValue placeholder={t('contact.placeholderProduct')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="general">General Inquiry</SelectItem>
+                        <SelectItem value="general">{t('contact.generalInquiry') || t('contact.generalInquiry')}</SelectItem>
                         {products.map((product) => (
                           <SelectItem key={product.id} value={product.id}>
                             {product.name}
@@ -153,13 +155,13 @@ const Contact = () => {
 
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Message <span className="text-destructive">*</span>
+                      {t('contact.formLabelMessage')} <span className="text-destructive">{t('contact.formRequired')}</span>
                     </label>
                     <Textarea
                       id="message"
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell us about your project or question..."
+                      onChange={(e) => setFormData({ ...formData, message: (e.target as HTMLTextAreaElement).value })}
+                      placeholder={t('contact.placeholderMessage')}
                       rows={6}
                       required
                       className="bg-background resize-none"
@@ -172,7 +174,7 @@ const Contact = () => {
                     className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-glow"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Sending..." : "Send Message"}
+                    {isSubmitting ? t('contact.buttonSending') : t('contact.buttonSend')}
                   </Button>
                 </form>
               </Card>
@@ -184,15 +186,15 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <Mail className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Email Us</h3>
+                <h3 className="font-semibold text-lg mb-2">{t('contact.emailCardTitle')}</h3>
                 <p className="text-muted-foreground text-sm mb-3">
-                  Get in touch via email for any questions
+                  {t('contact.emailCardDesc')}
                 </p>
                 <a
-                  href="mailto:contact@nextcore.ai"
+                  href={`mailto:${t('contact.emailAddress')}`}
                   className="text-primary hover:underline font-medium"
                 >
-                  contact@nextcore.ai
+                  {t('contact.emailAddress')}
                 </a>
               </Card>
 
@@ -200,11 +202,11 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <Clock className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Support Hours</h3>
+                <h3 className="font-semibold text-lg mb-2">{t('contact.supportCardTitle')}</h3>
                 <p className="text-muted-foreground text-sm">
-                  Monday - Friday: 9:00 AM - 6:00 PM EST
+                  {t('contact.supportHoursWeekday')}
                   <br />
-                  Weekend: 10:00 AM - 4:00 PM EST
+                  {t('contact.supportHoursWeekend')}
                 </p>
               </Card>
 
@@ -212,20 +214,20 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <MessageSquare className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Live Chat</h3>
+                <h3 className="font-semibold text-lg mb-2">{t('contact.chatCardTitle')}</h3>
                 <p className="text-muted-foreground text-sm mb-3">
-                  Chat with our support team in real-time
+                  {t('contact.chatCardDesc')}
                 </p>
                 <Button variant="outline" className="w-full">
-                  Start Chat
+                  {t('contact.chatButton')}
                 </Button>
               </Card>
 
               <Card className="p-6 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
                 <CheckCircle className="w-10 h-10 text-primary mb-3" />
-                <h3 className="font-semibold text-lg mb-2">Quick Response</h3>
+                <h3 className="font-semibold text-lg mb-2">{t('contact.responseCardTitle')}</h3>
                 <p className="text-muted-foreground text-sm">
-                  We typically respond to all inquiries within 24 hours during business days
+                  {t('contact.responseCardDesc')}
                 </p>
               </Card>
             </div>

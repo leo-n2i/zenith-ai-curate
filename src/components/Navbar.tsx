@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, Moon, Sun } from "lucide-react";
@@ -13,6 +15,20 @@ const Navbar = () => {
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+
+  const handleThemeToggle = () => {
+    console.log('theme toggle clicked', { theme, hasToggle: typeof toggleTheme === 'function' });
+    try {
+      if (typeof toggleTheme === 'function') {
+        toggleTheme();
+        console.log('toggleTheme called');
+      } else {
+        console.warn('toggleTheme is not a function');
+      }
+    } catch (err) {
+      console.error('toggleTheme error', err);
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-border/50">
@@ -30,61 +46,33 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <NavLink
-              to="/"
-              end
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/products"
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
-            >
-              Products
-            </NavLink>
-            <NavLink
-              to="/bundles"
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
-            >
-              Bundles
-            </NavLink>
-            <NavLink
-              to="/contact"
-              className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat"
-              activeClassName="text-primary"
-            >
-              Contact
-            </NavLink>
+            <NavLink to="/" end className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat" activeClassName="text-primary">Home</NavLink>
+            <NavLink to="/products" className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat" activeClassName="text-primary">Products</NavLink>
+            <NavLink to="/bundles" className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat" activeClassName="text-primary">Bundles</NavLink>
+            <NavLink to="/contact" className="text-muted-foreground hover:text-primary transition-all font-semibold font-montserrat" activeClassName="text-primary">Contact</NavLink>
+            <LanguageSwitcher />
           </div>
 
           {/* CTA Button & Theme Toggle */}
           <div className="hidden md:flex items-center gap-3">
             {/* Theme Toggle */}
             <button
-              onClick={toggleTheme}
+              type="button"
+              onClick={handleThemeToggle}
+              aria-pressed={theme === 'dark'}
               className="p-2 rounded-lg border border-border/50 hover:bg-muted transition-colors"
               aria-label="Toggle dark mode"
             >
-              {theme === 'light' ? (
-                <Moon className="w-5 h-5 text-foreground" />
-              ) : (
-                <Sun className="w-5 h-5 text-foreground" />
-              )}
+              {theme === 'light' ? <Moon className="w-5 h-5 text-foreground" /> : <Sun className="w-5 h-5 text-foreground" />}
             </button>
-
+              
             {user ? (
               <Button onClick={() => navigate('/dashboard')}>
                 <User className="w-4 h-4 mr-2" />
                 Dashboard
               </Button>
             ) : (
-              <Button onClick={() => setAuthModalOpen(true)}>
-                Get Started
-              </Button>
+              <Button onClick={() => setAuthModalOpen(true)}>Get Started</Button>
             )}
           </div>
 
@@ -92,7 +80,9 @@ const Navbar = () => {
           <div className="md:hidden flex items-center gap-2">
             {/* Mobile Theme Toggle */}
             <button
-              onClick={toggleTheme}
+              type="button"
+              onClick={handleThemeToggle}
+              aria-pressed={theme === 'dark'}
               className="p-2 rounded-lg border border-border/50 hover:bg-muted transition-colors"
               aria-label="Toggle dark mode"
             >
@@ -103,11 +93,7 @@ const Navbar = () => {
               )}
             </button>
 
-            <button
-              className="text-foreground"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
+            <button className="text-foreground" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>

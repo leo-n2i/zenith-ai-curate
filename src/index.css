@@ -64,7 +64,44 @@ All colors MUST be HSL.
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* set Avenir stack as the site font */
+    --font-sans: "Avenir Next", "Avenir", "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
   }
+
+  /* apply globally */
+  body {
+    font-family: var(--font-sans);
+    font-weight: 400; /* base body weight */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Heading and header weights (titles 700, headers 600) */
+  h1, .title-700 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+  h2, .title-700-sm {
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+  h3, .title-600 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+  }
+
+  /* site header / navbar text slightly bolder */
+  .site-header, nav, .nav-link {
+    font-family: var(--font-sans);
+    font-weight: 600;
+  }
+
+  /* Utility classes you can use in JSX */
+  .font-avenir-700 { font-family: var(--font-sans); font-weight: 700; }
+  .font-avenir-600 { font-family: var(--font-sans); font-weight: 600; }
+  .font-avenir-400 { font-family: var(--font-sans); font-weight: 400; }
 }
 
 @layer base {
@@ -110,47 +147,6 @@ All colors MUST be HSL.
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
-  }
-}
-
-/* Dark Mode Styles */
-@layer base {
-  .dark {
-    /* Light background for dark mode */
-    --background: 0 0% 95%; /* Light off-white */
-    --foreground: 0 0% 8%; /* Dark text */
-
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 8%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
-
-    --primary: 120 60% 35%; /* Darker green for contrast */
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 120 40% 45%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 85%;
-    --muted-foreground: 0 0% 30%;
-
-    --accent: 120 50% 40%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 85%;
-    --input: 0 0% 100%;
-    --ring: 120 50% 50%;
-
-    /* Grey Shades for Light Mode */
-    --grey-darker: 0 0% 90%;
-    --grey-dark: 0 0% 92%;
-    --grey-medium: 0 0% 80%;
-    --grey-light: 0 0% 60%;
-    --grey-lighter: 0 0% 40%;
   }
 }
 

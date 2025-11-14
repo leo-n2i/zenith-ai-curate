@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,11 +17,34 @@ import {
 } from "@/components/ui/accordion";
 
 const Index = () => {
+  const { t } = useTranslation();
   const featuredProducts = products.slice(0, 6);
   const statsAnimation = useScrollAnimation(0.2);
   const howItWorksAnimation = useScrollAnimation(0.2);
   const testimonialsAnimation = useScrollAnimation(0.2);
   const faqAnimation = useScrollAnimation(0.2);
+
+  // localized testimonials array
+  const testimonials = [
+    {
+      name: t('testimonials.testimonial1Name'),
+      role: t('testimonials.testimonial1Role'),
+      content: t('testimonials.testimonial1Content'),
+      rating: 5
+    },
+    {
+      name: t('testimonials.testimonial2Name'),
+      role: t('testimonials.testimonial2Role'),
+      content: t('testimonials.testimonial2Content'),
+      rating: 5
+    },
+    {
+      name: t('testimonials.testimonial3Name'),
+      role: t('testimonials.testimonial3Role'),
+      content: t('testimonials.testimonial3Content'),
+      rating: 5
+    }
+  ];
 
   return (
     <div className="min-h-screen">
@@ -45,29 +69,28 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
             <Badge className="tech-card shadow-glow">
               <Sparkles className="w-3 h-3 mr-1" />
-              Trusted by 10,000+ Companies Worldwide
+              {t('hero.badge')}
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-extrabold leading-tight font-montserrat">
-              Discover AI Solutions for{" "}
-              <span className="gradient-text animate-glow">Every Industry</span>
+              {t('hero.title')}{" "}
+              <span className="gradient-text animate-glow">{t('hero.titleHighlight')}</span>
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
-              Empower your business with your own private AI solution. 
-              Harness cutting-edge, confidential technology to accelerate innovation and growth across every industry — from healthcare to finance — with secure, tailor-made intelligence built just for you.
+              {t('hero.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link to="/products">
                 <Button size="lg">
-                  Explore Products
+                  {t('hero.ctaPrimary')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link to="/bundles">
                 <Button size="lg" variant="outline">
-                  View Bundles
+                  {t('hero.ctaSecondary')}
                 </Button>
               </Link>
             </div>
@@ -108,9 +131,9 @@ const Index = () => {
               <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 neon-glow">
                 <Zap className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3 font-montserrat">Lightning Fast</h3>
+              <h3 className="text-xl font-bold mb-3 font-montserrat">{t('features.feature1Title')}</h3>
               <p className="text-muted-foreground text-sm font-light leading-relaxed">
-                Deploy AI solutions in minutes, not months. Get started instantly.
+                {t('features.feature1Desc')}
               </p>
             </div>
 
@@ -118,9 +141,9 @@ const Index = () => {
               <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 neon-glow">
                 <Shield className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3 font-montserrat">Enterprise Security</h3>
+              <h3 className="text-xl font-bold mb-3 font-montserrat">{t('features.feature2Title')}</h3>
               <p className="text-muted-foreground text-sm font-light leading-relaxed">
-                Bank-level encryption and compliance with SOC 2, GDPR, HIPAA.
+                {t('features.feature2Desc')}
               </p>
             </div>
 
@@ -128,9 +151,9 @@ const Index = () => {
               <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 neon-glow">
                 <TrendingUp className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3 font-montserrat">Scale Effortlessly</h3>
+              <h3 className="text-xl font-bold mb-3 font-montserrat">{t('features.feature3Title')}</h3>
               <p className="text-muted-foreground text-sm font-light leading-relaxed">
-                From startup to enterprise, our AI grows with your business.
+                {t('features.feature3Desc')}
               </p>
             </div>
 
@@ -138,9 +161,9 @@ const Index = () => {
               <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 neon-glow">
                 <Sparkles className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3 font-montserrat">AI Innovation</h3>
+              <h3 className="text-xl font-bold mb-3 font-montserrat">{t('features.feature4Title')}</h3>
               <p className="text-muted-foreground text-sm font-light leading-relaxed">
-                Access the latest AI models and technologies as they emerge.
+                {t('features.feature4Desc')}
               </p>
             </div>
           </div>
@@ -153,10 +176,10 @@ const Index = () => {
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-12 space-y-4">
             <h2 className="text-4xl md:text-6xl font-extrabold font-montserrat">
-              Featured <span className="gradient-text">Products</span>
+              {t('featuredProducts.title')} <span className="gradient-text">{t('featuredProducts.titleHighlight')}</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
-              Explore our most popular AI solutions trusted by industry leaders
+              {t('featuredProducts.subtitle')}
             </p>
           </div>
 
@@ -169,7 +192,7 @@ const Index = () => {
           <div className="text-center">
             <Link to="/products">
               <Button size="lg" variant="outline">
-                View All Products
+                {t('featuredProducts.viewAll')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -191,25 +214,25 @@ const Index = () => {
               <div className="text-5xl md:text-7xl font-extrabold text-primary font-montserrat neon-glow">
                 <AnimatedCounter end={10000} suffix="+" isVisible={statsAnimation.isVisible} />
               </div>
-              <p className="text-muted-foreground font-semibold font-montserrat">Active Users</p>
+              <p className="text-muted-foreground font-semibold font-montserrat">{t('stats.activeUsers')}</p>
             </div>
             <div className="text-center space-y-2">
               <div className="text-5xl md:text-7xl font-extrabold text-primary font-montserrat neon-glow">
                 <AnimatedCounter end={500} suffix="+" isVisible={statsAnimation.isVisible} />
               </div>
-              <p className="text-muted-foreground font-semibold font-montserrat">AI Solutions</p>
+              <p className="text-muted-foreground font-semibold font-montserrat">{t('stats.aiSolutions')}</p>
             </div>
             <div className="text-center space-y-2">
               <div className="text-5xl md:text-7xl font-extrabold text-primary font-montserrat neon-glow">
                 <AnimatedCounter end={95} suffix="%" isVisible={statsAnimation.isVisible} />
               </div>
-              <p className="text-muted-foreground font-semibold font-montserrat">Satisfaction Rate</p>
+              <p className="text-muted-foreground font-semibold font-montserrat">{t('stats.satisfactionRate')}</p>
             </div>
             <div className="text-center space-y-2">
               <div className="text-5xl md:text-7xl font-extrabold text-primary font-montserrat neon-glow">
                 <AnimatedCounter end={120} suffix="+" isVisible={statsAnimation.isVisible} />
               </div>
-              <p className="text-muted-foreground font-semibold font-montserrat">Countries Served</p>
+              <p className="text-muted-foreground font-semibold font-montserrat">{t('stats.countriesServed')}</p>
             </div>
           </div>
         </div>
@@ -223,13 +246,13 @@ const Index = () => {
           <div className="text-center mb-16 space-y-4">
             <Badge className="tech-card shadow-glow">
               <Rocket className="w-3 h-3 mr-1" />
-              Simple Process
+              {t('howItWorks.badge')}
             </Badge>
             <h2 className="text-4xl md:text-6xl font-extrabold font-montserrat">
-              Get Started in <span className="gradient-text">3 Easy Steps</span>
+              {t('howItWorks.title')} <span className="gradient-text">{t('howItWorks.titleHighlight')}</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
-              Deploy enterprise AI solutions in minutes, not months
+              {t('howItWorks.subtitle')}
             </p>
           </div>
 
@@ -241,20 +264,20 @@ const Index = () => {
               {
                 step: "01",
                 icon: Users,
-                title: "Choose Your Solution",
-                description: "Browse our curated marketplace of AI solutions or explore pre-built bundles tailored to your industry needs."
+                title: t('howItWorks.step1Title'),
+                description: t('howItWorks.step1Desc')
               },
               {
                 step: "02",
                 icon: Zap,
-                title: "Quick Integration",
-                description: "Seamlessly integrate with your existing tools using our plug-and-play APIs and comprehensive documentation."
+                title: t('howItWorks.step2Title'),
+                description: t('howItWorks.step2Desc')
               },
               {
                 step: "03",
                 icon: TrendingUp,
-                title: "Scale & Optimize",
-                description: "Monitor performance in real-time and scale effortlessly as your business grows with our intelligent infrastructure."
+                title: t('howItWorks.step3Title'),
+                description: t('howItWorks.step3Desc')
               }
             ].map((item, index) => (
               <div
@@ -293,10 +316,10 @@ const Index = () => {
         <div className="container mx-auto">
           <div className="text-center mb-12 space-y-4">
             <h2 className="text-4xl md:text-6xl font-extrabold font-montserrat">
-              Browse by <span className="gradient-text">Category</span>
+              {t('categories.title')} <span className="gradient-text">{t('categories.titleHighlight')}</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
-              Find AI solutions tailored to your industry
+              {t('categories.subtitle')}
             </p>
           </div>
 
@@ -322,10 +345,10 @@ const Index = () => {
           <div className="text-center mb-16 space-y-4">
             <Badge className="tech-card shadow-glow">
               <Star className="w-3 h-3 mr-1" />
-              Trusted by Leaders
+              {t('testimonials.badge')}
             </Badge>
             <h2 className="text-4xl md:text-6xl font-extrabold font-montserrat">
-              What Our <span className="gradient-text">Customers Say</span>
+              {t('testimonials.title')} <span className="gradient-text">{t('testimonials.titleHighlight')}</span>
             </h2>
           </div>
 
@@ -335,26 +358,7 @@ const Index = () => {
               testimonialsAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            {[
-              {
-                name: "Sarah Chen",
-                role: "CTO at HealthTech Solutions",
-                content: "YourOps.ai's infrastructure has transformed how we deploy AI models. What used to take weeks now takes hours. The scalability is unmatched.",
-                rating: 5
-              },
-              {
-                name: "Marcus Rodriguez",
-                role: "VP of Operations at FinanceFlow",
-                content: "The analytics platform gave us insights we never thought possible. ROI was positive within the first quarter. Absolutely game-changing.",
-                rating: 5
-              },
-              {
-                name: "Emily Watson",
-                role: "Head of Marketing at RetailHub",
-                content: "Our conversion rates jumped 40% after implementing the AI optimization suite. The customer support is exceptional too.",
-                rating: 5
-              }
-            ].map((testimonial, index) => (
+            {testimonials.map((testimonial, index) => (
               <div
                 key={index}
                 className="tech-card p-8 relative border-l-4 border-primary noise-texture"
@@ -386,10 +390,10 @@ const Index = () => {
         <div className="container mx-auto max-w-3xl">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-4xl md:text-6xl font-extrabold font-montserrat">
-              Frequently Asked <span className="gradient-text">Questions</span>
+              {t('faq.title')} <span className="gradient-text">{t('faq.titleHighlight')}</span>
             </h2>
             <p className="text-xl text-muted-foreground font-light">
-              Everything you need to know about YourOps.ai
+              {t('faq.subtitle')}
             </p>
           </div>
 
@@ -402,46 +406,46 @@ const Index = () => {
             <Accordion type="single" collapsible className="space-y-4">
               <AccordionItem value="item-1" className="tech-card px-6">
                 <AccordionTrigger className="hover:no-underline font-bold font-montserrat">
-                  How quickly can I get started?
+                  {t('faq.question1')}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground font-light">
-                  Most of our AI solutions can be deployed in under 30 minutes. Our quick-start guides and comprehensive documentation ensure you're up and running fast.
+                  {t('faq.answer1')}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-2" className="tech-card px-6">
                 <AccordionTrigger className="hover:no-underline font-bold font-montserrat">
-                  What kind of support do you offer?
+                  {t('faq.question2')}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground font-light">
-                  We provide 24/7 technical support, dedicated account managers for enterprise clients, comprehensive documentation, and regular training webinars.
+                  {t('faq.answer2')}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-3" className="tech-card px-6">
                 <AccordionTrigger className="hover:no-underline font-bold font-montserrat">
-                  Is my data secure?
+                  {t('faq.question3')}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground font-light">
-                  Absolutely. We're SOC 2 Type II certified, GDPR compliant, and HIPAA compliant. All data is encrypted at rest and in transit using bank-level encryption.
+                  {t('faq.answer3')}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-4" className="tech-card px-6">
                 <AccordionTrigger className="hover:no-underline font-bold font-montserrat">
-                  Can I customize the AI solutions?
+                  {t('faq.question4')}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground font-light">
-                  Yes! All our solutions offer extensive customization options. Enterprise clients can also request fully custom AI models tailored to their specific needs.
+                  {t('faq.answer4')}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-5" className="tech-card px-6">
                 <AccordionTrigger className="hover:no-underline font-bold font-montserrat">
-                  What happens if I need to scale?
+                  {t('faq.question5')}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground font-light">
-                  Our infrastructure automatically scales with your needs. From startup to enterprise, you can upgrade your plan anytime without any downtime or data migration.
+                  {t('faq.answer5')}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -460,21 +464,21 @@ const Index = () => {
             </div>
             <div className="relative z-10 px-8 py-20 text-center space-y-6">
               <h2 className="text-4xl md:text-5xl font-extrabold text-background font-montserrat">
-                Ready to Transform Your Business?
+                {t('cta.title')}
               </h2>
               <p className="text-xl text-background/90 max-w-2xl mx-auto font-light">
-                Join thousands of companies leveraging AI to drive growth and innovation
+                {t('cta.subtitle')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Link to="/products">
                   <Button size="lg" variant="secondary" className="bg-background text-primary hover:bg-background/90 shadow-elevated">
-                    Get Started Now
+                    {t('cta.ctaPrimary')}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
                 <Link to="/contact">
                   <Button size="lg" variant="outline" className="border-2 border-background text-background hover:bg-background/20">
-                    Contact Sales
+                    {t('cta.ctaSecondary')}
                   </Button>
                 </Link>
               </div>
